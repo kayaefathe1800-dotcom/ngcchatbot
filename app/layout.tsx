@@ -2,17 +2,17 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "やることリスト",
-  description: "シンプルで使いやすい日本語のToDo管理アプリ",
-  applicationName: "やることリスト",
-  keywords: ["ToDo", "タスク管理", "Next.js", "日本語"],
+  title: "社長資料チャットボット",
+  description: "社内資料だけを根拠に回答する、日本語対応の資料ベースチャットボット",
+  applicationName: "社長資料チャットボット",
+  keywords: ["社内チャットボット", "資料検索", "Next.js", "Vercel", "日本語"],
   icons: {
     icon: "/icon.svg"
   }
 };
 
 export const viewport: Viewport = {
-  themeColor: "#edf3f1"
+  themeColor: "#dff6dd"
 };
 
 export default function RootLayout({
