@@ -95,9 +95,11 @@ function chunkText(title: string, rawText: string) {
   return chunks;
 }
 
-function loadSeedDocuments() {
+function loadSeedDocuments(selectedNames?: string[]) {
   const directory = join(process.cwd(), "data", "documents");
-  const fileNames = readdirSync(directory);
+  const fileNames = readdirSync(directory).filter(
+    (fileName) => !selectedNames || selectedNames.includes(fileName)
+  );
 
   return fileNames.map((fileName) => ({
     name: fileName,
@@ -128,11 +130,13 @@ export async function POST(request: Request) {
 
     const body = (await request.json()) as {
       messages?: IncomingMessage[];
+      selectedSeedDocumentNames?: string[];
       uploadedDocuments?: RequestDocument[];
       presidentTone?: boolean;
     };
 
     const messages = body.messages ?? [];
+    const selectedSeedDocumentNames = body.selectedSeedDocumentNames ?? [];
     const uploadedDocuments = body.uploadedDocuments ?? [];
     const presidentTone = Boolean(body.presidentTone);
     const latestUserMessage = [...messages].reverse().find((message) => message.role === "user");
@@ -141,12 +145,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "質問内容が空です。" }, { status: 400 });
     }
 
-    const combinedDocuments = [...loadSeedDocuments(), ...uploadedDocuments]
+    const combinedDocuments = [
+      ...loadSeedDocuments(selectedSeedDocumentNames),
+      ...uploadedDocuments
+    ]
       .filter((document) => document.text.trim())
       .map((document) => ({
         name: document.name,
         text: document.text.slice(0, 120000)
       }));
+
+    if (combinedDocuments.length === 0) {
+      return NextResponse.json({
+        answer: FALLBACK_MESSAGE,
+        sources: []
+      });
+    }
 
     const relevantChunks = selectRelevantChunks(latestUserMessage.content, combinedDocuments);
 

@@ -1,7 +1,6 @@
 :root {
   color-scheme: light;
   --bg: #f5f7f2;
-  --bg-accent: #e8f7df;
   --surface: rgba(255, 255, 255, 0.86);
   --surface-strong: #ffffff;
   --line: rgba(24, 43, 32, 0.08);
@@ -13,7 +12,7 @@
   --assistant: #ffffff;
   --user: #d7f7b8;
   --danger: #bb3f52;
-  --shadow: 0 22px 70px rgba(36, 61, 45, 0.10);
+  --shadow: 0 22px 70px rgba(36, 61, 45, 0.1);
 }
 
 * {
@@ -182,6 +181,71 @@ button {
 
 .sidebar-card {
   padding: 24px;
+  display: grid;
+  gap: 18px;
+}
+
+.sidebar-section {
+  display: grid;
+  gap: 14px;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.history-item.is-active {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: linear-gradient(180deg, rgba(232, 247, 223, 0.88), rgba(255, 255, 255, 0.98));
+}
+
+.history-select,
+.history-delete {
+  border-radius: 14px;
+}
+
+.history-select {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  background: transparent;
+  color: var(--text);
+  padding: 2px;
+}
+
+.history-select strong {
+  display: block;
+  font-size: 0.98rem;
+}
+
+.history-select span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.history-delete {
+  padding: 10px 12px;
+  background: #f9ecef;
+  color: var(--danger);
+  align-self: center;
 }
 
 .sidebar-header,
@@ -219,14 +283,36 @@ button {
 }
 
 .document-chip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  display: grid;
+  gap: 14px;
   padding: 16px;
   border-radius: 20px;
   background: var(--surface-strong);
   border: 1px solid var(--line);
+}
+
+.document-chip.is-seed {
+  background: linear-gradient(180deg, rgba(232, 247, 223, 0.85), rgba(255, 255, 255, 0.96));
+}
+
+.document-chip.is-muted {
+  opacity: 0.58;
+}
+
+.document-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.document-check input {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: var(--accent-deep);
+  flex-shrink: 0;
 }
 
 .document-chip strong,
@@ -237,10 +323,34 @@ button {
 
 .document-chip span,
 .sources-box small,
-.sources-label {
+.sources-label,
+.document-badge {
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.5;
+}
+
+.document-badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(24, 43, 32, 0.08);
+  white-space: nowrap;
+}
+
+.document-actions {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.toggle-use-button {
+  padding: 10px 12px;
+  background: #edf8ef;
+  color: var(--accent-deep);
+  border-radius: 14px;
 }
 
 .document-chip button {
@@ -248,10 +358,6 @@ button {
   background: #f9ecef;
   color: var(--danger);
   flex-shrink: 0;
-}
-
-.document-chip.is-seed {
-  background: linear-gradient(180deg, rgba(232, 247, 223, 0.85), rgba(255, 255, 255, 0.96));
 }
 
 .chat-card {
@@ -299,7 +405,7 @@ button {
 .sources-box {
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px dashed rgba(24, 43, 32, 0.10);
+  border-top: 1px dashed rgba(24, 43, 32, 0.1);
   display: grid;
   gap: 10px;
 }
@@ -353,7 +459,7 @@ button {
 
 .composer textarea:focus {
   border-color: rgba(29, 143, 74, 0.42);
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.10);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
 }
 
 .composer-footer {
@@ -442,6 +548,12 @@ button {
     max-width: 88%;
   }
 
+  .document-chip {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .history-header,
   .sidebar-header,
   .chat-header,
   .composer-footer {
@@ -451,7 +563,10 @@ button {
 
   .upload-button,
   .send-button,
-  .ghost-button {
+  .ghost-button,
+  .history-delete,
+  .document-chip button,
+  .toggle-use-button {
     width: 100%;
   }
 }
